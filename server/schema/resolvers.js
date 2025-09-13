@@ -1,4 +1,5 @@
 const { UserList, MovieList } = require("../FakeData");
+const _ = require("lodash");
 
 const resolvers = {
   Query: {
@@ -50,7 +51,7 @@ const resolvers = {
     },
     deleteUser: (parent, args) => {
       const id = args.id;
-      UserList.filter((user) => user.id !== Number(id));
+       _.remove(UserList,(user) => user.id === Number(id))
       return null;
     },
   },
