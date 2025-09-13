@@ -1,35 +1,28 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+import {
+  ApolloClient,
+  InMemoryCache,
+  HttpLink,
+  useQuery,
+} from "@apollo/client";
+import { ApolloProvider } from "@apollo/client/react";
+import DisplayData from "./DisplayData";
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const client = new ApolloClient({
+    cache: new InMemoryCache(),
+    link: new HttpLink({ uri: "http://localhost:4000/graphql" }),
+  });
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <ApolloProvider client={client}>
+        <div>
+          <h1>List of Users</h1>
+          <DisplayData/>
+        </div>
+      </ApolloProvider>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
