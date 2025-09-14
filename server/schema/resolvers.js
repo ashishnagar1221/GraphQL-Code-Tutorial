@@ -5,7 +5,8 @@ const resolvers = {
   Query: {
     //Users resolvers
     users: () => {
-      return UserList;
+      if (UserList) return { users: UserList };
+      return { message: "Yo, there was an error" };
     },
     user: (_, args) => {
       const id = args.id;
@@ -51,7 +52,20 @@ const resolvers = {
     },
     deleteUser: (parent, args) => {
       const id = args.id;
-       _.remove(UserList,(user) => user.id === Number(id))
+      _.remove(UserList, (user) => user.id === Number(id));
+      return null;
+    },
+  },
+
+  UsersResult: {
+    __resolveType(obj) {
+      if (obj.users) {
+        return "UserSuccessfulResult";
+      }
+      if (obj.message) {
+        return "UserErrorResult";
+      }
+
       return null;
     },
   },
